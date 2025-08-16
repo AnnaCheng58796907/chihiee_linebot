@@ -9,4 +9,4 @@ demo = gr.Interface(
     outputs=["text"],
     examples = [["徐國堂","2"],["徐瑞彤","1"]]
 )
-demo.launch()
+demo.launch(share = True) # 'share = True '建立對外網址，其他人可使用
