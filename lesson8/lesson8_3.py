@@ -9,6 +9,8 @@ with gr.Blocks() as demo:  # block區塊
     output_texbox = gr.Textbox(label='輸出', placeholder='輸出結果會顯示在這裡')
     greet_button = gr.Button('打招呼')
 
+
+# 'click()' 事件類別,按鈕點擊時觸發
     @greet_button.click(
         inputs = [name_textbox],
         outputs = [output_texbox]
