@@ -1,9 +1,11 @@
 from flask import Flask,render_template_string, request, jsonify
 from google import genai
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 app = Flask(__name__)
+client = genai.Client(api_key=os.getenv("GENAI_API_KEY"))
 
 @app.route("/")
 def index():
@@ -68,6 +70,13 @@ def chat():
     question = data.get("question", "").strip()
     if not question:
         return jsonify({"error": "未輸入問題"}), 400
-    # Here you would typically process the question and generate a response
-    response = f"你問的是: {question}"
-    return jsonify({"text": response})
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=f"{question},回應請輸出成html格式,請記得你的名字是'Anna',請用繁體中文回答"
+        )
+        html_format = response.text.replace("```html", "").replace("```", "")
+        return jsonify({"html": html_format})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
